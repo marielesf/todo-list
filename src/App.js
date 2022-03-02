@@ -1,13 +1,29 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
+import bloco from "./bloco.png";
 
 const GlobalStyle = createGlobalStyle`
-*{
+body{
   padding: 0%;
   margin: 0%
   box-sizing: 0%;
+  text-align:center;
+  background-position-x: center;
+  background-image: url(${bloco});
+  background-repeat: no-repeat;
 }
+
+.fundoDeApresentacao{
+  padding-top: 200px;
+}
+
+li{
+  list-style-type: none;
+  text-align:left;
+  margin-left: 40%
+}
+
 `;
 //const sempre inicia maiuscula
 const Title1 = styled.h1`
@@ -56,32 +72,43 @@ class Todo extends Component {
   render() {
     return (
       <>
-        <div>
-          <GlobalStyle />
-          <Title1>React App Todo List</Title1>
-          <input
-            onChange={this.handleChange}
-            type="text"
-            value={this.state.tarefa}
-          />
-          <button onClick={this.add}>Add</button>
-          <div>
-            {this.state.lista.map((item) => (
-              <ul>
-                <li>
-                  {item.tarefa}
-                  <button
-                    onClick={() => {
-                      this.remove(item.id);
-                    }}
-                  >
-                    x
-                  </button>
-                </li>
-              </ul>
-            ))}
+        <GlobalStyle />
+        {/* Foi utilizado a tag <form> </form> para que seja possível a criação da
+        tarefa ao pressionar a tecla Enter do teclado. */}
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            this.add();
+          }}
+        >
+          {/* Na função submit é chamado o evento “preventDefault” que impede a
+          página ser recarregada após o envio do form. */}
+          <div className="fundoDeApresentacao">
+            <Title1>React App Todo List</Title1>
+            <input
+              onChange={this.handleChange}
+              type="text"
+              value={this.state.tarefa}
+            />
+            <button>Add</button>
+            <div>
+              {this.state.lista.map((item) => (
+                <ul>
+                  <li>
+                    <button
+                      onClick={() => {
+                        this.remove(item.id);
+                      }}
+                    >
+                      x
+                    </button>
+                    {item.tarefa}
+                  </li>
+                </ul>
+              ))}
+            </div>
           </div>
-        </div>
+        </form>
       </>
     );
   }
